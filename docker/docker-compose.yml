@@ -1,0 +1,42 @@
+services:
+
+  laravel_nginx:
+    image: nginx
+    hostname: laravel_nginx
+    container_name: laravel_nginx
+    restart: unless-stopped
+    environment:
+      TZ: "Europe/Moscow"
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./..:/usr/share/nginx/html
+
+  laravel_php:
+    build: ./php
+    hostname: laravel_php
+    container_name: laravel_php
+    restart: unless-stopped
+    user: root
+    environment:
+      TZ: "Europe/Moscow"
+    volumes:
+      - ./..:/var/www/html
+      - ./php/php.ini:/usr/local/etc/php/php.ini
+
+  laravel_db:
+    image: mariadb
+    hostname: laravel_db
+    container_name: laravel_db
+    restart: unless-stopped
+    environment:
+      TZ: "Europe/Moscow"
+      MARIADB_DATABASE: laravel
+      MARIADB_USER: admin
+      MARIADB_PASSWORD: admin
+      MARIADB_ROOT_PASSWORD: admin123
+    volumes:
+      - ./mysql_data:/var/lib/mysql
