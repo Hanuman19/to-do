@@ -10,16 +10,30 @@ use Illuminate\Foundation\Http\FormRequest;
  */
 class AuthRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    public function rules()
+    /**
+     * @return string[]
+     */
+    public function rules(): array
     {
         return [
             'user' => 'required|string',
             'password' => 'required|string'
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function messages(): array
+    {
+        return [
+            'user.required' => 'User не передан',
+            'password.required' => 'Password не передан',
         ];
     }
 }

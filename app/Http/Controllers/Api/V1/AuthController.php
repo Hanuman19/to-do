@@ -11,19 +11,17 @@ class AuthController extends Controller
 {
     public function authenticateToken(AuthRequest $request)
     {
-        dd(1);
-        return 123;
         $response = new AuthResponse();
         if (Auth::attempt([
-            'name' => $request->name,
+            'name' => $request->user,
             'password' => $request->password,
         ])) {
-            $token = $request->user()->createToken($request->name);
+            $token = $request->user()->createToken($request->user);
             $response->token = $token->plainTextToken;
             $response->success = true;
         } else {
             $response->setMsg('Ошибка авторизации');
         }
-        return $response;
+        return $response->toArray();
     }
 }
