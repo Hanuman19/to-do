@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Domain\Tasks\Request;
+namespace App\Http\Request\Tasks;
 
+use App\Http\Request\Common\AuthorizeTrait;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * @property string $completed
  */
 class IndexRequest extends FormRequest
 {
+    use AuthorizeTrait;
     public function authorize(): bool
     {
-        if (Auth::user()) {
-            return true;
-        }
-        return false;
+        return $this->checkAuth();
     }
 
     /**

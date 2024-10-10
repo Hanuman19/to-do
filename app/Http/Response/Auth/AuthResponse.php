@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Auth\Response;
+namespace App\Http\Response\Auth;
 
 use App\Http\Response\BaseResponse;
 

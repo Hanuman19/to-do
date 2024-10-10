@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Tasks\DTO;
+namespace App\Services\Tasks\DTO;
 
 use App\Common\DTO\BaseDTO;
 

@@ -1,24 +1,20 @@
 <?php
 
-namespace App\Domain\Tasks\Request;
+namespace App\Http\Request\Tasks;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
-
+use App\Http\Request\Common\AuthorizeTrait;
 /**
  * @property string $title
  * @property string $description
  * @property string $completed_at
- * @property string $completed
  */
-class UpdateRequest extends FormRequest
+class CreateRequest extends FormRequest
 {
+    use AuthorizeTrait;
     public function authorize(): bool
     {
-        if (Auth::user()) {
-            return true;
-        }
-        return false;
+        return $this->checkAuth();
     }
 
     /**
@@ -30,7 +26,6 @@ class UpdateRequest extends FormRequest
             'title' => 'required|string',
             'description' => 'nullable|string',
             'completed_at' => 'nullable|date',
-            'completed' => 'nullable|boolean',
         ];
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Tasks\Response;
+namespace App\Http\Response\Tasks;
 
 use App\Http\Response\BaseResponse;
 use App\Models\Tasks;

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Domain\Auth\Request\AuthRequest;
-use App\Domain\Auth\Response\AuthResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Request\Auth\AuthRequest;
+use App\Http\Response\Auth\AuthResponse;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller

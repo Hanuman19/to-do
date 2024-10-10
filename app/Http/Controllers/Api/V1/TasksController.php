@@ -2,49 +2,45 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Domain\Tasks\Actions\TaskActions;
-use App\Domain\Tasks\DTO\TasksDTO;
-use App\Domain\Tasks\Gateways\TaskGateways;
-use App\Domain\Tasks\Request\CreateRequest;
-use App\Domain\Tasks\Request\IndexRequest;
-use App\Domain\Tasks\Request\UpdateRequest;
-use App\Domain\Tasks\Response\TaskResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Exception\ActionException;
+use App\Http\Request\Tasks\CreateRequest;
+use App\Http\Request\Tasks\IndexRequest;
+use App\Http\Request\Tasks\UpdateRequest;
 use App\Http\Response\BaseResponse;
+use App\Http\Response\Tasks\TaskResponse;
+use App\Services\Tasks\CreateService;
+use App\Services\Tasks\DeleteService;
+use App\Services\Tasks\DTO\TasksDTO;
+use App\Services\Tasks\GetService;
+use App\Services\Tasks\UpdateService;
 
 class TasksController extends Controller
 {
     public function create(CreateRequest $request): array
     {
         $response = new TaskResponse();
-        $action = new TaskActions();
+        $createService = new CreateService();
         $data = new TasksDTO();
         $post = $request->post();
         $data->fill($post);
-        if ($task = $action->create($data)) {
-            $response->success = true;
-            $response->task = $task;
-        } else {
-            $response->setMsg('Не удалось создать задачу');
-        }
+        $task = $createService->service($data);
+        $response->success = true;
+        $response->task = $task;
         return $response->toArray();
     }
 
     public function update(UpdateRequest $request, int $id): array
     {
         $response = new TaskResponse();
-        $action = new TaskActions();
+        $updateService = new UpdateService();
         $data = new TasksDTO();
         $post = $request->post();
         $post['id'] = $id;
         $data->fill($post);
-        if ($task = $action->update($data)) {
-            $response->success = true;
-            $response->task = $task;
-        } else {
-            $response->setMsg('Не удалось обновить задачу');
-        }
+        $task = $updateService->service($data);
+        $response->success = true;
+        $response->task = $task;
         return $response->toArray();
     }
 
@@ -52,8 +48,8 @@ class TasksController extends Controller
     {
         $response = new BaseResponse();
         try {
-            $action = new TaskActions();
-            if ($action->delete($id)) {
+            $deleteService = new DeleteService();
+            if ($deleteService->service($id)) {
                 $response->success = true;
             } else {
                 $response->setMsg('Не удалось удалить задачу');
@@ -66,9 +62,9 @@ class TasksController extends Controller
 
     public function index(IndexRequest $request)
     {
-        $action = new TaskGateways();
+        $getService = new GetService();
         $page = $request->input('page', 1);
 
-        return $action->index($request->completed, $page);
+        return $getService->service($request->completed, $page);
     }
 }
